@@ -1,0 +1,188 @@
+{
+  "skill_name": "nemotron-voice-agent-deploy",
+  "cases": [
+    {
+      "id": "nemotron-voice-agent-deploy-cloud-no-gpu",
+      "prompt": "I have no local GPU. Bring up the generic assistant for the Nemotron Voice Agent using NVIDIA cloud endpoints.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Selects the cloud recipe `generic-assistant` (no `/server` or `/single-gpu`), requires only NVIDIA_API_KEY (NVCF), does not run a docker login to nvcr.io, and starts it with `docker compose --profile generic-assistant up -d`.",
+      "assertions": [
+        "Loaded nemotron-voice-agent-deploy/SKILL.md and only the cloud reference.",
+        "Chose exactly one recipe: the cloud `generic-assistant` profile.",
+        "Required NVIDIA_API_KEY and did not perform an nvcr.io docker login for the cloud recipe.",
+        "Did not use HF_TOKEN."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-server-workstation",
+      "prompt": "Deploy the generic assistant on my workstation GPU with local NIM sidecars.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Selects `generic-assistant/server`, requires NVIDIA_API_KEY plus an nvcr.io docker login before `up`, and brings it up with `docker compose --profile generic-assistant/server up -d`.",
+      "assertions": [
+        "Selected the `generic-assistant/server` recipe.",
+        "Ran the NGC login: docker login nvcr.io with NVIDIA_API_KEY before bringing the stack up.",
+        "Did not mix in HF_TOKEN.",
+        "Ran commands from the repository root that contains docker-compose.yml."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-single-gpu-dgx-spark",
+      "prompt": "Deploy the multilingual assistant on my DGX Spark.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Selects `multilingual-assistant/single-gpu`, requires HF_TOKEN, does not use NVIDIA_API_KEY or an nvcr.io login, and completes the single-GPU memory-fit before bringing it up.",
+      "assertions": [
+        "Selected a `*/single-gpu` recipe for DGX Spark rather than `*/server`.",
+        "Required HF_TOKEN and did not use NVIDIA_API_KEY or nvcr.io login.",
+        "Did not open the server reference for a DGX Spark host."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-subagents-thor-fallback",
+      "prompt": "Bring up omni-assistant-subagents on my Jetson Thor.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Recognizes that omni-assistant-subagents/single-gpu is not supported on Jetson Thor and routes to the cloud recipe `omni-assistant-subagents` instead.",
+      "assertions": [
+        "Identified that omni-assistant-subagents/single-gpu is unsupported on Jetson Thor.",
+        "Routed to the cloud `omni-assistant-subagents` recipe as the supported path.",
+        "Did not fabricate a single-gpu Thor recipe for subagents."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-auth-troubleshoot",
+      "prompt": "My generic-assistant/server deployment fails to pull the NIM sidecar images with a 401 unauthorized. Fix it.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Diagnoses a missing or invalid nvcr.io login and re-runs docker login nvcr.io with a valid NVIDIA_API_KEY that has image access, without switching to HF_TOKEN.",
+      "assertions": [
+        "Attributed the 401 to the nvcr.io login / NVIDIA_API_KEY, not to HF_TOKEN.",
+        "Recommended docker login nvcr.io with a valid NVIDIA_API_KEY.",
+        "Kept the server auth model (did not suggest HF_TOKEN for a `*/server` recipe)."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-configure-swap-llm",
+      "prompt": "Switch the generic assistant's default LLM to nemotron-super and apply it.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Moves nemotron-super to the front of the generic example's `services.llm` in examples_registry.yaml, confirms the key exists in services.yaml for the active recipe, then does a compose restart of the example service (no rebuild).",
+      "assertions": [
+        "Loaded nemotron-voice-agent-deploy/SKILL.md and references/configure.md.",
+        "Edited examples_registry.yaml services for the generic example rather than source code.",
+        "Verified the LLM catalog key exists in services.yaml for the active recipe.",
+        "Re-applied via compose restart without rebuilding the image."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-configure-bolt-e4b-single-gpu",
+      "prompt": "Run Nemotron 3.5 Bolt E4B with the generic assistant on my single-GPU workstation.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Adds the `nemotron-35-bolt-e4b-single-gpu` sidecar profile next to `generic-assistant/single-gpu`, scales Lightning to zero, requires HF_TOKEN, has the user select `nemotron-bolt-4b` in the Services tab, and uses the same profile flags on `down` without `--scale`.",
+      "assertions": [
+        "Loaded nemotron-voice-agent-deploy/SKILL.md and references/configure.md.",
+        "Ran `docker compose --profile generic-assistant/single-gpu --profile nemotron-35-bolt-e4b-single-gpu up -d --scale nvidia-llm-vllm-lightning=0`.",
+        "Treated `nemotron-35-bolt-e4b-single-gpu` as a sidecar profile next to the recipe, not as a second recipe.",
+        "Required HF_TOKEN and did not use NVIDIA_API_KEY or nvcr.io login for the single-GPU recipe.",
+        "Checked at least 24 GiB usable GPU memory for Bolt E4B.",
+        "Told the user to select `nemotron-bolt-4b` in the Services tab before connecting.",
+        "Used the same `--profile` flags on `down`, without `--scale`."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-configure-bolt-e4b-server",
+      "prompt": "Add the Bolt E4B NIM to my generic-assistant/server deployment.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Runs `docker compose --profile generic-assistant/server --profile nemotron-35-bolt-e4b up -d --scale nvidia-llm=0` with the server auth model, because the Bolt E4B NIM runs in place of the Lightning NIM.",
+      "assertions": [
+        "Loaded nemotron-voice-agent-deploy/SKILL.md, references/configure.md, and references/server.md.",
+        "Ran `docker compose --profile generic-assistant/server --profile nemotron-35-bolt-e4b up -d --scale nvidia-llm=0`.",
+        "Kept the server auth model: NVIDIA_API_KEY plus docker login nvcr.io, no HF_TOKEN.",
+        "Told the user to select `nemotron-bolt-4b` in the Services tab before connecting."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-configure-bolt-74b-single-gpu",
+      "prompt": "Use Nemotron 3.5 Bolt 74B for the multilingual assistant on my DGX Spark.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Uses `multilingual-assistant/single-gpu` with the `nemotron-35-bolt-single-gpu` sidecar profile and Lightning scaled to zero, requires HF_TOKEN, has the user select `nemotron-bolt-74b`, and does not offer a server NIM because none exists for Bolt 74B.",
+      "assertions": [
+        "Loaded nemotron-voice-agent-deploy/SKILL.md and references/configure.md.",
+        "Ran `docker compose --profile multilingual-assistant/single-gpu --profile nemotron-35-bolt-single-gpu up -d --scale nvidia-llm-vllm-lightning=0`.",
+        "Did not offer a `*/server` NIM for Bolt 74B.",
+        "Required HF_TOKEN and did not use NVIDIA_API_KEY or nvcr.io login.",
+        "Told the user to select `nemotron-bolt-74b` in the Services tab before connecting.",
+        "Used the same `--profile` flags on `down`, without `--scale`."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-configure-add-multilingual-prompt",
+      "prompt": "Add a Spanish persona prompt to the multilingual assistant and make it the default.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Adds the prompt to the multilingual example's prompts.yaml, sets it as defaults.prompt in examples_registry.yaml, confirms the catalog uses multilingual-capable ASR and TTS, then restarts the example service.",
+      "assertions": [
+        "Edited the multilingual example's prompts.yaml and examples_registry.yaml defaults.",
+        "Ensured multilingual-capable ASR and TTS are selected for the persona.",
+        "Restarted the example service and did not rebuild the image."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-configure-env-audio-debug",
+      "prompt": "Enable the audio recorder debug setting in .env for the running agent.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Sets the supported audio-debug flag in .env, preserves unrelated keys and comments, and re-applies Compose so the container restarts and reads the new environment.",
+      "assertions": [
+        "Edited only .env for the feature flag, preserving unrelated keys.",
+        "Re-applied Compose so the container restarts and picks up the change.",
+        "Did not modify source or rebuild the image."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-configure-restrict-examples",
+      "prompt": "Only expose the generic and multilingual examples in the UI.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Explains that `selection` in examples_registry.yaml accepts only `all` or one example id, so it cannot expose exactly two examples, and offers `all` or locking to one example instead without writing an invalid list.",
+      "assertions": [
+        "Did not write a list or two example ids into `selection`.",
+        "Stated that `selection` accepts only `all` or one example id.",
+        "Preserved the other registry entries and comments."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-configure-speaker-labels",
+      "prompt": "Turn on speaker labels for the generic assistant.",
+      "expected_skill": "nemotron-voice-agent-deploy",
+      "expected_output": "Selects nemotron-asr-streaming-english, says to switch Speaker Labels > Diarization in the browser (or send asr_speaker_diarization, or set ENABLE_SPEAKER_DIARIZATION=true in .env for API clients), and points to docs/how-to/enable-speaker-labels.md.",
+      "assertions": [
+        "Did not edit pipeline.py.",
+        "Pointed to docs/how-to/enable-speaker-labels.md."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-negative-upgrade",
+      "prompt": "Upgrade pipecat-ai from 1.7.0 to 1.9.0 across this repository.",
+      "expected_skill": null,
+      "expected_output": "The deploy skill does not activate because a Pipecat version migration is handled by nemotron-voice-agent-upgrade-pipecat.",
+      "assertions": [
+        "Did not load or apply nemotron-voice-agent-deploy.",
+        "Recognized this as a Pipecat upgrade task, not a deployment."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-negative-unrelated",
+      "prompt": "Write a standalone Python script that transcribes a folder of WAV files offline.",
+      "expected_skill": null,
+      "expected_output": "The deploy skill does not activate because offline batch transcription is not a Nemotron Voice Agent Compose deployment.",
+      "assertions": [
+        "Did not load or apply nemotron-voice-agent-deploy.",
+        "Recognized this as offline batch STT unrelated to deploying the voice agent."
+      ]
+    },
+    {
+      "id": "nemotron-voice-agent-deploy-negative-source",
+      "prompt": "Rewrite pipeline.py to add a new custom Pipecat processor.",
+      "expected_skill": null,
+      "expected_output": "The deploy skill does not activate because source-code changes to pipeline.py are out of scope. It only deploys and edits .env, catalogs, settings, and prompts.",
+      "assertions": [
+        "Did not load or apply nemotron-voice-agent-deploy.",
+        "Recognized source-level pipeline changes as out of scope for this skill."
+      ]
+    }
+  ]
+}
