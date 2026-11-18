@@ -1,8 +1,0 @@
-# TRIAL ONLY — fork trial of sync-plugins.yml. Not for upstream.
-name: Demo Product
-repo: sayalinvidia/sayali-skills-test
-description: Demo product whose plugin bundles two Jetson skills, a docs MCP server and a hook.
-skills: []
-plugins:
-  - path: plugin/
-    catalog_dir: nvidia-demo

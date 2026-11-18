@@ -1,0 +1,10 @@
+# TRIAL ONLY — fork trial of sync-plugins.yml. Not for upstream.
+# Mirrors the components.d/tao.yml example in the proposal doc, pointed at
+# the test repo instead of NVIDIA-TAO/tao-skill-bank.
+name: TAO Toolkit Demo
+repo: sayalinvidia/sayali-skills-test
+description: Train, fine-tune, optimize, and export vision AI models with TAO.
+skills: []
+plugins:
+  - path: plugin/                # directory in the product repo
+    catalog_dir: nvidia-tao      # plugins/<catalog_dir>/ here, and the install name
