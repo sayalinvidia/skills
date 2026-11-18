@@ -1,0 +1,10 @@
+# TRIAL ONLY — fork trial of sync-plugins.yml. Not for upstream.
+name: Sync Plugins Test
+repo: sayalinvidia/sayali-skills-test
+description: Trial component for the plugin sync pipeline.
+skills: []
+plugins:
+  - path: plugin-src/nvidia-test/
+    catalog_dir: nvidia-test
+  - path: plugin-src/nvidia-test-unsigned/
+    catalog_dir: nvidia-test-unsigned
