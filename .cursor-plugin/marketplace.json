@@ -12,6 +12,11 @@
             "name": "nvidia-skills",
             "source": "./plugins/nvidia-skills",
             "description": "Find the right NVIDIA skill for GPU acceleration, CUDA, AI agents, data loading, training, inference, robotics, Physical AI, Omniverse, simulation, and other NVIDIA-powered workflows."
+        },
+        {
+            "name": "nvidia-tao",
+            "source": "./plugins/nvidia-tao",
+            "description": "Train, fine-tune, optimize, and export vision AI models with TAO. DEMO mirror for the plugin sync trial."
         }
     ]
 }

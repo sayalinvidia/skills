@@ -1,0 +1,8 @@
+{
+  "plugin": "nvidia-tao",
+  "tasks": [
+    {"id": "finetune-hf-model", "prompt": "Fine-tune a Hugging Face vision model on my dataset with TAO.", "expected_skills": ["tao-finetune-huggingface-model"]},
+    {"id": "run-in-docker", "prompt": "Run that TAO fine-tune job inside the TAO Docker container.", "expected_skills": ["tao-run-on-docker"]},
+    {"id": "end-to-end", "prompt": "Set up TAO in Docker and fine-tune a Hugging Face model.", "expected_skills": ["tao-run-on-docker", "tao-finetune-huggingface-model"]}
+  ]
+}
