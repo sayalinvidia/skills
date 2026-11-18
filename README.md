@@ -193,7 +193,7 @@ Plugins bundle a product's skills together with their evals, MCP servers, hooks 
 <!-- plugins-table-start -->
 | Plugin | Description | Version | Skills | Source |
 |--------|-------------|---------|--------|--------|
-| _No plugins published yet_ | | | | |
+| `nvidia-tao` | Train, fine-tune, optimize, and export vision AI models with TAO. DEMO mirror for the plugin sync trial. | `1.0.0` | 2 | [TAO Toolkit Demo](https://github.com/sayalinvidia/sayali-skills-test) |
 <!-- plugins-table-end -->
 
 ---
