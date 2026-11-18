@@ -1,0 +1,1 @@
+{"tasks": [{"id": "find-cuda-skill", "prompt": "Which NVIDIA skill helps with CUDA kernel tuning?", "expected": "nvidia-skill-finder recommends a CUDA skill"}]}

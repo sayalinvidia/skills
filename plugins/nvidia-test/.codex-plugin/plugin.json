@@ -1,0 +1,1 @@
+{"name": "nvidia-test", "version": "1.0.0", "description": "TEST FIXTURE for the plugin sync pipeline trial.", "category": "Developer Tools", "interface": {"displayName": "NVIDIA Test Plugin"}}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "nvidia-test",
+  "version": "1.0.0",
+  "description": "TEST FIXTURE for the plugin sync pipeline trial — bundles nvidia-skill-finder.",
+  "author": {"name": "NVIDIA", "url": "https://github.com/sayalinvidia/sayali-skills-test"},
+  "license": "Apache-2.0 AND CC-BY-4.0",
+  "keywords": ["nvidia", "test"]
+}

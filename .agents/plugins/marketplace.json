@@ -15,6 +15,18 @@
                 "authentication": "ON_INSTALL"
             },
             "category": "Developer Tools"
+        },
+        {
+            "name": "nvidia-test",
+            "source": {
+                "source": "local",
+                "path": "./plugins/nvidia-test"
+            },
+            "policy": {
+                "installation": "AVAILABLE",
+                "authentication": "ON_INSTALL"
+            },
+            "category": "Developer Tools"
         }
     ]
 }

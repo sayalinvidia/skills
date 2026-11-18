@@ -194,6 +194,7 @@ Plugins bundle a product's skills together with their evals, MCP servers, hooks 
 | Plugin | Description | Version | Skills | Source |
 |--------|-------------|---------|--------|--------|
 | `nvidia-skills` | Find the right NVIDIA skill for GPU acceleration, CUDA, AI agents, data loading, training, inference, robotics, Physical AI, Omniverse, simulation, and other NVIDIA-powered workflows. | `1.5.0` | 1 | NVIDIA Skills (this repo) |
+| `nvidia-test` | TEST FIXTURE for the plugin sync pipeline trial — bundles nvidia-skill-finder. | `1.0.0` | 1 | [Sync Plugins Test](https://github.com/sayalinvidia/sayali-skills-test) |
 <!-- plugins-table-end -->
 
 ---

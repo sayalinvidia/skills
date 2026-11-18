@@ -12,6 +12,11 @@
             "name": "nvidia-skills",
             "source": "./plugins/nvidia-skills",
             "description": "Find the right NVIDIA skill for GPU acceleration, CUDA, AI agents, data loading, training, inference, robotics, Physical AI, Omniverse, simulation, and other NVIDIA-powered workflows."
+        },
+        {
+            "name": "nvidia-test",
+            "source": "./plugins/nvidia-test",
+            "description": "TEST FIXTURE for the plugin sync pipeline trial — bundles nvidia-skill-finder."
         }
     ]
 }
