@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "nvidia-tao",
+  "version": "1.0.0",
+  "description": "Train, fine-tune, optimize, and export vision AI models with TAO. DEMO mirror for the plugin sync trial.",
+  "author": {"name": "NVIDIA", "url": "https://github.com/NVIDIA-TAO"},
+  "homepage": "https://developer.nvidia.com/tao-toolkit",
+  "repository": "https://github.com/sayalinvidia/sayali-skills-test",
+  "license": "Apache-2.0 AND CC-BY-4.0",
+  "keywords": ["nvidia", "tao", "computer-vision", "fine-tuning"]
+}
