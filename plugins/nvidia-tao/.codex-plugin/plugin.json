@@ -1,0 +1,20 @@
+{
+  "name": "nvidia-tao",
+  "version": "1.0.0",
+  "description": "Train, fine-tune, optimize, and export vision AI models with TAO. DEMO mirror for the plugin sync trial.",
+  "author": {
+    "name": "NVIDIA",
+    "url": "https://github.com/NVIDIA-TAO"
+  },
+  "homepage": "https://developer.nvidia.com/tao-toolkit",
+  "license": "Apache-2.0 AND CC-BY-4.0",
+  "category": "Developer Tools",
+  "interface": {
+    "displayName": "NVIDIA TAO",
+    "shortDescription": "Train and fine-tune vision AI with TAO",
+    "logo": "./assets/nvidia-tao.png"
+  },
+  "skills": {
+    "path": "./skills"
+  }
+}
